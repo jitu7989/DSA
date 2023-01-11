@@ -9,7 +9,8 @@ public class GardenerAndTheCapybaras {
     public static void main(String[] args) {
         
         int tc = in.nextInt();
-        
+//        a b baa
+//        System.out.println( "a".compareTo( "b" ) + "<---> " + "baa".compareTo("b") );
         while(tc-->0){
             
             String capybaras = in.next();
@@ -28,15 +29,14 @@ public class GardenerAndTheCapybaras {
                     b.append( capybaras.charAt(j) );
                     StringBuilder c = new StringBuilder();
                     
-                    for (int k = j+1; k < n; k++)
-                        c.append( capybaras.charAt(k) );
+                    for (int k = j+1; k < n; k++) c.append( capybaras.charAt(k) );
                     
                     String a1 = a.toString();
                     String b1 = b.toString();
                     String c1 = c.toString();
                     int x = a1.compareTo( b1 );
                     int y = c1.compareTo(b1);
-                    if( x==0 && y==0 || x+y!=0 ){
+                    if( (x<=0 && y<=0) || (x>=0 && y>=0) ){
                         System.out.println( a1+" "+b1+" "+c1 );
                         flag = false;
                     }
@@ -46,8 +46,8 @@ public class GardenerAndTheCapybaras {
             if(flag) System.out.println(":(");
             
         }
-        
-        
+
+
     }
     
 
