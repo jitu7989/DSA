@@ -7,10 +7,15 @@ import java.io.*;
 
 public class Main{
 
+    public static void main(String[] args) {
+
+
+
+    }
 
     public int xorBeauty(int[] nums) {
 
-return 0;
+        return 0;
 
     }
 
