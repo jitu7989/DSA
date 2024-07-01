@@ -1,8 +1,9 @@
+package java;
 
 import java.util.*;
 import java.io.*;
 
-public  class Main {
+public class BoilerPlate {
 
     public static FastReader in = new FastReader();
     public static Utility util = new Utility();
