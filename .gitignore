@@ -1,6 +1,6 @@
 **/.idea/
 DSA.iml
-./out/
+**/out/
 ./out/**/*
 ./out/*
 **/vscode/
