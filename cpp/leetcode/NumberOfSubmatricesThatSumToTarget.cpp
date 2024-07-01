@@ -1,8 +1,12 @@
+#include <bits/stdc++.h>;
+using namespace std;
+using ll = long long;
+
 class Solution {
 public:
     int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
 
-        int n=size(matrix), m=size(matrix[0]);
+        int n=matrix.size(), m=matrix[0].size();
         int ans = 0;
         long long preFix[n+1][m+1];
         for(int i=0; i<=n; i++) preFix[i][0] = 0;
