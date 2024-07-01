@@ -1,3 +1,7 @@
-./.idea/
+**/.idea/
 DSA.iml
 ./out/
+./out/**/*
+./out/*
+**/vscode/
+**/cmake-build-debug/
