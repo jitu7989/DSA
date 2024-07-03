@@ -7,10 +7,10 @@ class Solution {
 public:
 
     ll gcd(ll a,ll b){
-        return !a ? b: gcd(b%a,a);
+        return !a ? b: gcd_arr(b % a, a);
     }
     ll lcm(ll a,ll b){
-        return (a*b)/gcd(a,b);
+        return (a*b) / gcd_arr(a, b);
     }
 
     ll get_nums(ll a, ll b, ll mid) {
