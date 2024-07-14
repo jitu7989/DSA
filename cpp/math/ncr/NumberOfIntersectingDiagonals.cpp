@@ -1,9 +1,6 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h>;
 using namespace std;
 using ll = long long;
-
-const int MAX = 1e5*2+10;
-ll fact[MAX];
 
 class ModUtil{
 public:
@@ -34,7 +31,7 @@ public:
         return mul(a, power(b,mod-2));
     }
     ll subtract(ll a,ll b){
-        return (a%mod-b%mod+mod)%mod;
+        return (a-b+mod)%mod;
     }
     ll do_mod(ll a){
         return a%mod;
@@ -43,12 +40,19 @@ public:
 ModUtil modUtil;
 
 void solve(){
-    ll n,m;
-    cin >> n >> m;
-    ll ans = fact[n+m];
-    ans = modUtil.divide(ans,fact[n]);
-    ans = modUtil.divide(ans,fact[m]);
-    cout << ans << "\n";
+    ll n;cin >>n;
+    if(n<=3){
+        cout << 0 << "\n";
+        return;
+    }
+
+
+    ll ans = 1;
+    for (int i = 0; i <= 3; ++i) {
+        ans = modUtil.mul(ans,n-i);
+    }
+    cout << modUtil.divide(ans,24) << "\n";
+
 }
 
 
@@ -58,12 +62,7 @@ int main(){
     cin.tie(0);
     cout.tie(0);
 
-    fact[0]=1;
-    for (ll i = 1; i < MAX; ++i) {
-        fact[i] = modUtil.mul(i,fact[i-1]);
-    }
-
-    ll tc;
+    int tc;
     cin >> tc;
     while(tc--) solve();
 }
