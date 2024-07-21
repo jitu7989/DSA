@@ -20,6 +20,25 @@ template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
 void solve(){
+    int n,x,y;
+    cin >> n >> x >> y;
+    vector<int> vec(n,1);
+
+    int a = x, b = n-y+1;
+
+    int minus = abs(a-b);
+
+    if(b>a){
+        for (int i = n; i > n-(minus/2) ; --i)  vec[i-1]=-1;
+        if(minus%2) vec[x] = -1;
+    }
+    else if(a>b){
+        for (int i = 0; i < (minus/2) ; ++i)  vec[i]=-1;
+        if(minus%2) vec[y] = -1;
+    }
+    for (const auto &item: vec) cout << item << " ";
+    cout << "\n";
+
 }
 
 

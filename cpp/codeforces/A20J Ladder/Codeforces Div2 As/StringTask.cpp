@@ -19,9 +19,14 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
+char getlower(char c){
+    if(c>='A' && c<='Z') c+=32;
+    return c;
 }
-
+bool isvowel(char c){
+    c = getlower(c);
+    return c=='a' || c=='e' || c=='i' || c=='o' || c=='u' || c=='y';
+}
 
 
 signed main(){
@@ -29,9 +34,15 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) solve();
-
+    string s;
+    string ans;
+    cin >> s;
+    for (const auto &item: s){
+        if(!isvowel(item)){
+            ans+='.';
+            ans+=getlower(item);
+        }
+    }
+    cout << ans;
     return 0;
 }
