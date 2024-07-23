@@ -19,7 +19,23 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
+
+bool comp(pair<string,int> p1,pair<string,int> p2){
+    return p1.second<p2.second;
+}
+
 void solve(){
+    int n;cin >> n;
+    vector<pair<string,int>> students;
+    for (int i = 0; i < n; ++i) {
+        pair<string,int> p;
+        cin >> p.first; cin >> p.second;
+        students.push_back(p);
+    }
+    sort(students.begin(),students.end(), comp);
+    for (const auto &item: students){
+        cout << item.first  << " " << item.second << "\n";
+    }
 }
 
 
@@ -28,14 +44,10 @@ signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    int n,m;
-    cin >> n >> m;
 
-    int x = min(n,m);
-    if(x&1){
-        cout << "Akshat";
-    }
-    else cout << "Malvika";
+    int tc;
+    cin >> tc;
+    while(tc--) solve();
 
     return 0;
 }

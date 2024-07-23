@@ -29,9 +29,23 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) solve();
+    int n;
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; ++i)  cin >> arr[i];
+
+    int mxi = 0;
+    int mni = n-1;
+
+    for (int i = 0,j=n-1; i < n; ++i,--j) {
+        if(arr[mxi]<arr[i]) mxi = i;
+        if(arr[mni]>arr[j]) mni = j;
+    }
+
+    int ans = (n-(mni+1)) + mxi;
+
+    if(mxi>mni) ans--;
+    cout << ans;
 
     return 0;
 }

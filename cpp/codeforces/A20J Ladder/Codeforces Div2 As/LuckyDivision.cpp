@@ -29,9 +29,23 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) solve();
+    int n;
+    cin >> n;
+    vector<int> arr({4,7,47,74,444,447,474,477,744,747,774,777});
+    for (const auto &item: arr)
+        if(n%item==0) {
+            cout << "YES\n";
+            return 0;
+        }
 
+    while(n){
+        int mod = n%10;
+        n/=10;
+        if(mod!=4 && mod!=7 ) {
+            cout << "NO\n";
+            return 0;
+        }
+    }
+    cout << "YES\n";
     return 0;
 }

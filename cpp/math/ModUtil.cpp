@@ -1,5 +1,3 @@
-
-
 class ModUtil{
 public:
     using ll = long long;
