@@ -20,8 +20,13 @@ template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
 
-bool comp(pair<int,int> a,pair<int,int> b){
-    return a.first<b.first;
+bool check(vector<ll> &arr, ll n,ll m, ll mn){
+    ll subsidy_given = 0;
+    for (int i = 0; i < n; ++i) {
+        subsidy_given+=min(arr[i],mn);
+        if(subsidy_given>m) return 1;
+    }
+    return 0;
 }
 
 signed main(){
@@ -29,15 +34,29 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int n; cin >> n;
-    vector<pair<int,int>> arr(n,{0,0});
+    ll n,m; cin >> n >> m;
+    vector<ll> arr(n);
+    for (int i = 0; i < n; ++i) cin >> arr[i];
 
-    for (int i = 0; i < n; ++i) {
-        cin >> arr[i].first;
-        arr[i].second = i+1;
+    ll low = 0,high = m+1;
+    ll ans = 0;
+    while(low<=high){
+
+        ll mid = (low+high)/2;
+        if(check(arr, n, m,mid)){
+            high = mid-1;
+        }
+        else{
+            ans = mid;
+            low = mid+1;
+        }
+
     }
-    sort(arr.begin(),arr.end(), comp);
-    cout << arr[n-2].second << '\n';
-
+    if(ans==(m+1)){
+        cout << "infinite\n";
+    }
+    else {
+        cout << ans << '\n';
+    }
     return 0;
 }

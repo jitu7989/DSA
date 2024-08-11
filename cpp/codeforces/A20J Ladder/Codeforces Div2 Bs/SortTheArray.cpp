@@ -84,43 +84,45 @@ ll binpow(ll b, ll p, ll mod) {
     return ans;
 }
 
+struct ds {
+    bool inc = true;
+    int dec = 0;
+    int dec_start = 1;
+    int inc_start = 1;
 
+};
 
-bool check(int k, int b,map<ll,int> &m){
-    ll distinct_balls = 0;
-    ll distinct_balls_required = b*k;
-    for (const auto &item: m) distinct_balls+=min(b,item.second);
-    return distinct_balls_required<=distinct_balls;
-}
 void solve() {
+    int n;
+    cin >> n;
+    int arr[n + 2];
+    arr[n + 1] = INT32_MAX;
+    arr[0] = INT32_MIN;
+    for (int i = 1; i <= n; ++i) cin >> arr[i];
 
-    int n, k;
-    cin >> n >> k;
-    vector<ll> arr(n);
-    for (int i = 0; i < n; ++i) cin >> arr[i];
-    map<ll,int> m;
-    for (const auto &item: arr){
-        auto it = m.find(item);
-        int x = 0;
-        if(it!=m.end()){
-            x = it->second;
-            it->second++;
-        }
-        else{
-            m[item]=1;
+    ds d;
+    for (int i = 1; i <= n; ++i) {
+        if (arr[i] > arr[i + 1]) {
+            if (d.inc) {
+                d.dec++;
+                d.dec_start = i;
+                d.inc = false;
+            }
+        } else {
+            if (!d.inc) {
+                d.inc_start = i;
+                d.inc = true;
+            }
         }
     }
-    int lo=0, hi=n/k;
-    int ans = 0;
-    while(lo<=hi){
-        int mid = (lo+hi)/2;
-        if(check(k,mid,m)){
-            ans = mid;
-            lo=mid+1;
-        }
-        else hi=mid-1;
+
+    if (d.dec <= 1 && arr[d.dec_start - 1] < arr[d.inc_start] && arr[d.dec_start] < arr[d.inc_start + 1]) {
+        cout << "yes" << '\n';
+        cout << d.dec_start << ' ' << d.inc_start << '\n';
     }
-    cout << ans << '\n';
+    else cout << "no" << '\n';
+
+
 }
 
 
@@ -129,9 +131,7 @@ signed main() {
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while (tc--) solve();
+    solve();
 
     return 0;
 }

@@ -20,43 +20,28 @@ template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
 
-bool check(vector<ll> &arr, ll n,ll m, ll mn){
-    ll subsidy_given = 0;
-    for (int i = 0; i < n; ++i) {
-        subsidy_given+=min(arr[i],mn);
-        if(subsidy_given>m) return 1;
-    }
-    return 0;
-}
+
 
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
-    ll n,m; cin >> n >> m;
-    vector<ll> arr(n);
-    for (int i = 0; i < n; ++i) cin >> arr[i];
+    ll n; cin >> n;
+    string s; cin >> s;
 
-    ll low = 0,high = m+1;
-    ll ans = 0;
-    while(low<=high){
-
-        ll mid = (low+high)/2;
-        if(check(arr, n, m,mid)){
-            high = mid-1;
+    int sum   = 0;
+    int count = 0;
+    for (int i = 0; i < n; ++i) {
+        count++;
+        if( (i+1)>=n || s[i]!=s[i+1]) {
+            sum += ceil(count/2.0);
+            count = 0;
         }
-        else{
-            ans = mid;
-            low = mid+1;
-        }
+    }
+    cout << sum << "\n";
 
-    }
-    if(ans==(m+1)){
-        cout << "infinite\n";
-    }
-    else {
-        cout << ans << '\n';
-    }
+
+
     return 0;
 }

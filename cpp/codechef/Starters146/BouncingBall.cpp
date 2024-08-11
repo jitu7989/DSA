@@ -21,24 +21,35 @@ ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b
 
 void solve(){
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
+    int n; cin >> n;
+    ll arr[n];
+    for (int i = 0; i < n; ++i)  cin >> arr[i];
+    ll p[n], s[n];
+    fill(p,p+n,0);
+    fill(s,s+n,0);
 
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
-        }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
+    for (int i = 0, j=n-1; i < n; ++i,j--) {
+        p[i]+=arr[i];
+        if(i>=1) p[i]+=p[i-1];
+
+        s[j]+=arr[j];
+        if(j<=(n-2)) s[j]+=s[j+1];
+    }
+
+    ll ways = 0;
+
+    for (int i = 0; i < n; ++i) {
+
+        if(arr[i]==0){
+            ll l = p[i];
+            ll r = s[i];
+
+            if( (l-r)==1 || (l-r)==0 ) ways++;
+            if( (r-l)==1 || (r-l)==0 ) ways++;
+
         }
     }
-    cout << time;
+    cout << ways << '\n';
 
 }
 
@@ -49,7 +60,9 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    solve();
+    int tc;
+    cin >> tc;
+    while(tc--) solve();
 
     return 0;
 }

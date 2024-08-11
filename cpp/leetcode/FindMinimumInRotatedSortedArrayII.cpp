@@ -2,6 +2,7 @@
 using namespace std;
 using ll = long long;
 using ii = pair<ll,ll>;
+int _ = [](){ std::ios_base::sync_with_stdio(false); std::cin.tie(nullptr); return 0; }();
 
 //---- Debugger ---- //
 #define debarr(a,n) cout<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
@@ -19,37 +20,37 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
-
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
+class Solution {
+public:
+    void search(vector<int>& nums, int l, int r, int &ans){
+        if(l>r) return;
+        if(l==r) {
+            ans = min(ans,nums[l]);
+            return;
+        }
+        int mid = (l+r)/2;
+        if(nums[l]==nums[r]){
+            search(nums,l,r-1,ans);
+        }
+        else if(nums[mid]>nums[r]){
+            search(nums, mid+1,r,ans);
         }
         else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
+            search(nums, l,mid-1,ans);
+            ans = min(nums[mid],ans);
         }
     }
-    cout << time;
-
-}
-
+    int findMin(vector<int>& nums) {
+        int ans = nums[0];
+        search(nums,0,nums.size()-1,ans);;
+        return ans;
+    }
+};
 
 
 signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
 
-    solve();
+    Solution s;
 
     return 0;
 }

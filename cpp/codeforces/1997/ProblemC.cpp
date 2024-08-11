@@ -20,26 +20,29 @@ template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
 void solve(){
-
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
+    int n; cin >> n;
+    string s; cin >> s;
+    stack<int> openBrackets;
+    int ans=0;
+    for (int i = 0; i < n; ++i) {
+        if(s[i]=='_'){
+            if(openBrackets.empty()) {
+                openBrackets.push(i);
+            }
+            else {
+                ans += i-openBrackets.top();
+                openBrackets.pop();
+            }
+        }
+        else if(s[i]=='('){
+            openBrackets.push(i);
         }
         else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
+            ans += i-openBrackets.top();
+            openBrackets.pop();
         }
     }
-    cout << time;
-
+    cout << ans << '\n';
 }
 
 
@@ -49,7 +52,11 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    solve();
+    int tc;
+    cin >> tc;
+    while(tc--) solve();
 
     return 0;
 }
+..x.x.x.x
+xx.x.x.xx

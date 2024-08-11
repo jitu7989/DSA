@@ -19,37 +19,14 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
+class Solution {
+public:
+    string firstWord(int n, vector<string> &dictionary) {
+        sort(dictionary.begin(),dictionary.end());
+        for (int i = 0; i < n - 1; ++i) {
+            if(dictionary[i]==dictionary[i+1]) return "Invalid";
         }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
+        return dictionary[0];
     }
-    cout << time;
-
-}
-
-
-
-signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    solve();
-
-    return 0;
-}
+};

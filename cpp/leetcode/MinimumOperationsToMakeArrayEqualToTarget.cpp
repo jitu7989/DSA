@@ -2,6 +2,7 @@
 using namespace std;
 using ll = long long;
 using ii = pair<ll,ll>;
+int _ = [](){ std::ios_base::sync_with_stdio(false); std::cin.tie(nullptr); return 0; }();
 
 //---- Debugger ---- //
 #define debarr(a,n) cout<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
@@ -19,37 +20,49 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
-
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
+class Solution {
+public:
+    long long minimumOperations(vector<int>& nums, vector<int>& target) {
+        int n = (int)nums.size();
+        vector<ll> diff(n);
+        for (int i = 0; i < n; ++i)  diff[i] = nums[i]-target[i];
+        ll operations = 0;
+        bool posi = diff[0]>=0;
+        int l=0;
+        for (int i = 0; i < n; ++i) {
+            if(posi && diff[i]<0) {
+                posi= false;
+                operations += get_ops(l,i-1,diff);
+                l=i;
+            }
+            else if(!posi && diff[i]>=0){
+                posi= true;
+                operations += get_ops(l,i-1,diff);
+                l=i;
+            }
         }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
+        operations += get_ops(l,n-1,diff);
+        return operations;
     }
-    cout << time;
+    ll get_ops(int l, int r, vector<ll> &diff){
+        ll ops = 0;
+        ll prev = -1;
+        for (int i = l; i <= r; ++i) {
+            ll a = abs(diff[i]);
+            if(prev==-1) ops += a;
+            else if(prev<a) ops += a-prev;
+            prev = a;
+        }
+        return ops;
+    }
 
-}
+};
 
 
 
 signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
 
-    solve();
+    Solution s;
 
     return 0;
 }

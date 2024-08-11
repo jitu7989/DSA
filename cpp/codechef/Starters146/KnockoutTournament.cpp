@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -19,29 +20,41 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
+int n=16;
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
-        }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
-    }
-    cout << time;
-
+bool comp(pair<int,pair<int,int>> a,pair<int,pair<int,int>> b){
+    return a.first<b.first;
 }
 
+bool comp2(pair<int,pair<int,int>> a,pair<int,pair<int,int>> b){
+    return a.second.first<b.second.first;
+}
+void solve(){
+
+
+    vector<pair<int,pair<int,int>>> arr(n);
+
+    for (int i = 0; i < n; ++i)  {
+        arr[i].first = i;
+        cin >> arr[i].second.first;
+        arr[i].second.second=0;
+    }
+    sort(arr.begin(),arr.end(), comp2);
+
+    for (int i = 0; i < n; ++i) {
+        int x = i+1;
+        while(x>1){
+            x/=2;
+            arr[i].second.second++;
+        }
+    }
+    sort(arr.begin(),arr.end(), comp);
+    for (int i = 0; i < n; ++i) {
+        cout << arr[i].second.second << ' ';
+    }
+    cout << '\n';
+
+}
 
 
 signed main(){
@@ -49,7 +62,9 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    solve();
+    int tc;
+    cin >> tc;
+    while(tc--) solve();
 
     return 0;
 }

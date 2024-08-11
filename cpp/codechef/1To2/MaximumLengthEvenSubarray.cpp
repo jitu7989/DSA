@@ -21,24 +21,13 @@ ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b
 
 void solve(){
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
-        }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
+    int n;
+    cin >> n;
+    int half = (n+1)/2;
+    if(half&1){
+        cout << n-1 << '\n';
     }
-    cout << time;
+    else cout << n << '\n';
 
 }
 
@@ -49,7 +38,9 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    solve();
+    int tc;
+    cin >> tc;
+    while(tc--) solve();
 
     return 0;
 }

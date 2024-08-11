@@ -2,6 +2,7 @@
 using namespace std;
 using ll = long long;
 using ii = pair<ll,ll>;
+int _ = [](){ std::ios_base::sync_with_stdio(false); std::cin.tie(nullptr); return 0; }();
 
 //---- Debugger ---- //
 #define debarr(a,n) cout<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
@@ -19,37 +20,29 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
+class Solution {
+public:
+    int countOfPairs(vector<int>& nums) {
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
+        int l[nums.size()],r[nums.size()];
+        stack<int> sl,sr;
+        for (int i = 0,j=nums.size()-1; i < nums.size(); ++i,j--) {
+            while(!sl.empty() && nums[sl.top()]>=nums[i] ) sl.pop();
+            l[i] = sl.empty()?0:sl.top()+1;
+            sl.push(i);
 
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
+            while(!sr.empty() && nums[sr.top()]>=nums[j] ) sr.pop();
+            r[j] = sr.empty()?nums.size()+1:sr.top()+1;
+            sr.push(j);
         }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
+
+
     }
-    cout << time;
-
-}
-
-
+};
 
 signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
 
-    solve();
+    Solution s;
 
     return 0;
 }

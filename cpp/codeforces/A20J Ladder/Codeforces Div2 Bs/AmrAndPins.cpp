@@ -21,24 +21,19 @@ ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b
 
 void solve(){
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
+   ll r, x,y,x1,y1;
+   cin >> r >> x >> y >> x1 >> y1;
 
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
-        }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
-    }
-    cout << time;
+   ll dist = (r*2);
+   ll mx = max(abs(x1-x) , abs(y1-y));
+   ll mn = min(abs(x1-x) , abs(y1-y));
+
+   if(mx%dist){
+       cout << (mx/dist)+1;
+   }
+   else{
+       cout << (mx/dist);
+   }
 
 }
 
@@ -48,8 +43,6 @@ signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
     solve();
-
     return 0;
 }

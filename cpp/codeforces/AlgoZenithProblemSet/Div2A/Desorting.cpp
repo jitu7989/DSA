@@ -20,26 +20,17 @@ template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
 void solve(){
+    int n; cin >> n;
+    ll arr[n];
+    for (int i = 0; i < n; ++i)  cin >> arr[i];
 
-    int n,m;cin >> n >> m;
-    int arr[m];
-    for (int i = 0; i < m; ++i)  cin >> arr[i];
-
-    int posi = 1;
-    ll time = 0;
-    for (int i = 0; i < m; ++i) {
-        if(posi<=arr[i]){
-            time += (arr[i]-posi);
-            posi = arr[i];
-        }
-        else{
-            time += (n-posi);
-            time += arr[i];
-            posi = arr[i];
-        }
+    ll mx = INT32_MAX;
+    for (int i = 0; i < n - 1; ++i) {
+        ll x = arr[i+1]-arr[i];
+        mx = min((x/2)+1,mx);
+        if(x<0) mx = 0;
     }
-    cout << time;
-
+    cout << mx << "\n";
 }
 
 
@@ -49,7 +40,9 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    solve();
+    int tc;
+    cin >> tc;
+    while(tc--) solve();
 
     return 0;
 }
