@@ -4,6 +4,7 @@ using ll = long long;
 using ii = pair<ll,ll>;
 
 //---- Debugger ---- //
+int add_debugger = 0;
 #define debarr(a,n) cout<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
 #define debmat(mat,row,col) cout<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat[i][j]<<" ";cerr<<endl;}
 #define pr(...) dbs(#__VA_ARGS__, __VA_ARGS__)

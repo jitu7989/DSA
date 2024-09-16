@@ -3,6 +3,48 @@ using namespace std;
 using ll = long long;
 using ii = pair<ll,ll>;
 
+class ModUtil{
+public:
+    using ll = long long;
+    ll mod = 1e9+9;
+    ll mul(ll a, ll b){
+        return do_mod((a%mod)*(b%mod));
+    }
+    ll add(ll a,ll b){
+        return do_mod((a%mod)+(b%mod));
+    }
+    ll power(ll n,ll p){
+        ll ans = 1;
+        while(p){
+            if(p%2==0){
+                n = mul(n,n);
+                p/=2;
+            }
+            else{
+                ans = mul(ans,n);
+                --p;
+            }
+        }
+        return ans;
+    }
+
+    ll divide(ll a,ll b){
+        return mul(a, power(b,mod-2));
+    }
+    ll subtract(ll a,ll b){
+        return do_mod(a-b);
+    }
+    ll do_mod(ll a){
+        return ((a%mod)+mod)%mod;
+    }
+    ll inv(ll num,ll pow){
+        return power(power(num,pow),mod-2);
+    }
+    ll inv(ll num){
+        return power(num,mod-2);
+    }
+};
+
 //---- Debugger ---- //
 int add_debugger = 0;
 #define debarr(a,n) cout<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
@@ -19,69 +61,19 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.find(','); cerr << str.substr(0, idx) << " : " << t << ","; dbs(str.substr(idx + 1), s...);}
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
-
-int comp_first(ii a,ii b){
-    if(a.first<b.first) return -1;
-    return a.first>b.first;
-}
-
-ll search_k_val(int n,vector<ii> &pairs,ll k){
-
-    int l = 1, h = n;
-
-    ll ans = pairs[n].first;
-    while(l<=h){
-        int mid = l+((h-l)/2);
-
-        if(k<=pairs[mid].second){
-            ans = pairs[mid].first;
-            h = mid-1;
-        }
-        else{
-            l = mid+1;
-        }
-    }
-    if(ans==LONG_LONG_MAX) return -1;
-    return ans;
-}
+ll mod = 1e9+9;
+ModUtil mod_util;
 void solve(){
+    ll a,b,n; cin >> a >> b >> n;
 
-    int n,m,q; cin >> n >> m >> q;
-    vector<ll> arr(n+2),freq(n+2);
-    fill(arr.begin(),arr.end(),0);
-
-    for (int i = 1; i <= n; ++i)  cin >> arr[i];
-    for (int i = 0; i < m; ++i) {
-        int l,r;cin >> l >> r;
-        freq[l] += 1;
-        freq[r+1] -= 1;
+    if(a==1){
+        cout << mod_util.add(1,mod_util.mul(b,n)) << '\n';
     }
-    for (int i = 1; i <= n; ++i) {
-        freq[i] += freq[i-1];
+    else{
+        ll power = mod_util.power(a,n);
+        ll final = mod_util.mul(b,mod_util.divide(mod_util.subtract(power,1),a-1));
+        cout << mod_util.add(power, final) << '\n';
     }
-    vector<ii> pairs(n+2);
-    pairs[0].first=LONG_LONG_MIN;
-    pairs[0].second=0;
-
-    pairs[n+1].first=LONG_LONG_MAX;
-    pairs[n+1].second=LONG_LONG_MAX;
-
-    for (int i = 1; i <= n; ++i) {
-        pairs[i].first  = arr[i];
-        pairs[i].second = freq[i];
-    }
-    sort(pairs.begin(),pairs.end());
-
-    for (int i = 1; i <= n; ++i) {
-        pairs[i].second += pairs[i-1].second;
-    }
-
-
-    for (int i = 0; i < q; ++i) {
-        ll k; cin >> k;
-        cout << search_k_val(n+1,pairs,k) << ' ';
-    }
-    cout << '\n';
 
 }
 

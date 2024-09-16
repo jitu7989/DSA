@@ -19,6 +19,22 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
+bool check (vector<ll> &a,vector<ll> &b,int n,int m,int k,ll mid){
+    ll ne=0;
+    for (int i = 0; i < n; ++i) {
+        auto it = lower_bound(b.begin(),b.end(),mid-a[i]);
+        if(it==b.end()) ne+=m;
+        else if((*it+a[i])>mid){
+            if(it!=b.begin()){
+                ne += 
+            }
+        }
+        else{
+            ne+=it-b.begin()+1;
+        }
+    }
+    return ne>=k;
+}
 void solve(){
 
     int n,m,k; cin >> n >> m >> k;
@@ -34,6 +50,21 @@ void solve(){
         swap(a,b);
     }
 
+    ll l=a[0]+b[0],h=a[n-1]+b[m-1];
+    ll ans = -1;
+    while(l<=h){
+
+        ll mid = (l+h)/2;
+        if(check(a,b,n,m,k,mid)){
+            ans = mid;
+            h = mid-1;
+        }
+        else{
+            l=mid+1;
+        }
+
+    }
+    cout << ans << '\n';
 
 
 }

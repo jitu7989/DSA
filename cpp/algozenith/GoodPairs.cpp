@@ -4,7 +4,6 @@ using ll = long long;
 using ii = pair<ll,ll>;
 
 //---- Debugger ---- //
-int add_debugger = 0;
 #define debarr(a,n) cout<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
 #define debmat(mat,row,col) cout<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat[i][j]<<" ";cerr<<endl;}
 #define pr(...) dbs(#__VA_ARGS__, __VA_ARGS__)
@@ -19,69 +18,36 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.find(','); cerr << str.substr(0, idx) << " : " << t << ","; dbs(str.substr(idx + 1), s...);}
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
-
-int comp_first(ii a,ii b){
-    if(a.first<b.first) return -1;
-    return a.first>b.first;
-}
-
-ll search_k_val(int n,vector<ii> &pairs,ll k){
-
-    int l = 1, h = n;
-
-    ll ans = pairs[n].first;
-    while(l<=h){
-        int mid = l+((h-l)/2);
-
-        if(k<=pairs[mid].second){
-            ans = pairs[mid].first;
-            h = mid-1;
-        }
-        else{
-            l = mid+1;
-        }
-    }
-    if(ans==LONG_LONG_MAX) return -1;
-    return ans;
-}
+//  1 2
+//
 void solve(){
 
-    int n,m,q; cin >> n >> m >> q;
-    vector<ll> arr(n+2),freq(n+2);
-    fill(arr.begin(),arr.end(),0);
+    int n; cin >> n;
+    int a[n],b[n];
+    vector<ll> c(n);
+    for (int i = 0; i < n; ++i)  cin >> a[i];
+    for (int i = 0; i < n; ++i)  cin >> b[i];
+    for (int i = 0; i < n; ++i)  c[i] = a[i]-b[i];
+    sort(c.begin(),c.end());
+    ll sum = 0;
+//    2 3 5 4
+//    2 1 5 6
 
-    for (int i = 1; i <= n; ++i)  cin >> arr[i];
-    for (int i = 0; i < m; ++i) {
-        int l,r;cin >> l >> r;
-        freq[l] += 1;
-        freq[r+1] -= 1;
+//    0 2 0 -2
+//    -2 0 0 2
+    for (int i = 0; i < n; ++i) {
+        if(c[i]<=0){
+            int x = lower_bound(c.begin(),c.end(),((-c[i])+1ll))-c.begin();
+            if(x!=n){
+                sum += (n-x);
+            }
+        }
+        else{
+            sum += (n-(i+1));
+        }
+
     }
-    for (int i = 1; i <= n; ++i) {
-        freq[i] += freq[i-1];
-    }
-    vector<ii> pairs(n+2);
-    pairs[0].first=LONG_LONG_MIN;
-    pairs[0].second=0;
-
-    pairs[n+1].first=LONG_LONG_MAX;
-    pairs[n+1].second=LONG_LONG_MAX;
-
-    for (int i = 1; i <= n; ++i) {
-        pairs[i].first  = arr[i];
-        pairs[i].second = freq[i];
-    }
-    sort(pairs.begin(),pairs.end());
-
-    for (int i = 1; i <= n; ++i) {
-        pairs[i].second += pairs[i-1].second;
-    }
-
-
-    for (int i = 0; i < q; ++i) {
-        ll k; cin >> k;
-        cout << search_k_val(n+1,pairs,k) << ' ';
-    }
-    cout << '\n';
+    cout << sum << '\n';
 
 }
 
