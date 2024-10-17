@@ -31,6 +31,15 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
+
+int N, target;
+double dist[20][20], memo[1<<16];  // 1 << 16 = 2^16, note that max N = 8
+double matching(int bitmask){
+
+
+
+}
+
 void solve(){
 }
 
