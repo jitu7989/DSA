@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// When to use if for certain LR point criteria(l,r) is true then for criteria(l+(...(r-l)),r) should be true
 int main() {
     int n, k;
     cin >> n >> k;
