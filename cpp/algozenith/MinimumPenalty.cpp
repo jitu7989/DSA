@@ -31,45 +31,50 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
+int FREQ_SIZE = 1e6+10;
+int ARRAY_SIZE = (1e6*5)+3;
+vector<int> arr(ARRAY_SIZE);
+vector<int> freq(FREQ_SIZE);
+
 void solve(){
 
-    int n, k;
-    cin >> n >> k;
-    int arr[n];
-    for (int i = 0; i < n; ++i) cin >> arr[i];
+  int n,d; cin >> n >> d;
+  for(int i=0;i<n;i++) cin >> arr[i];
+  int distinct = 0,ans = d;
 
-    ll tail=0,head=-1;
-    ll ans=0,sum=0;
-
-    while (tail < n) {
-        ll nextHead = head + 1;
-
-        while (nextHead < n && (sum+arr[nextHead])<=k ) {
-            head++;
-            nextHead++;
-            sum+=arr[head];
-        }
-        ans += (head - tail + 1);
-        if (tail > head) {
-            tail++;
-            head = tail - 1;
-            sum=0;
-        } else {
-            sum-=arr[tail];
-            tail++;
-        }
+  int tail = 0, head = -1;
+  while (tail < n) {
+    int nextHead = head + 1;
+    while (nextHead < n && (head-tail+1)<d) {
+      head++;
+      nextHead++;
+      freq[arr[head]]++;
+      if(freq[arr[head]]==1) distinct++;
     }
+    if(head-tail+1==d) {
+      ans = min(ans, distinct);
+    }
+    if (tail > head) {
+      tail++;
+      head = tail - 1;
+    } else {
+      freq[arr[tail]]--;
+      if(freq[arr[tail]]==0) distinct--;
+      tail++;
+    }
+  }
 
-    cout << ans << '\n';
+  cout << ans << '\n';
 
 }
 
 
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
+    fill(freq.begin(),freq.end(),0);
 
     int tc;
     cin >> tc;

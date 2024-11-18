@@ -31,14 +31,14 @@ int main() {
     // [     -            ]
     while (tail < n) {
         //is there a next elements to eat and we can eat it
-        int nextElementIdx = head + 1;
-        while (nextElementIdx < n && (zero < k || arr[nextElementIdx] == 1) /*condition default could be (nextElemenet<n && (Application Condition)) */) {
+        int nextHead = head + 1;
+        while (nextHead < n && (zero < k || arr[nextHead] == 1) /*condition default could be (nextElemenet<n && (Application Condition)) */) {
             // Pre increment Application Logic
             // if (arr[nextElementIdx]==0) zero++;
 
             // includes element in window
             head++;
-
+            nextHead++;
             // Post increment Application Logic
             if (arr[head] == 0) zero++;
         }

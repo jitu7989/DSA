@@ -31,42 +31,36 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
+int  MAX_N=1e5+7;
+vector<int> arr(MAX_N);
+map<int,int> m;
+
+void arr_input(int n){
+    for(int i=0;i<n;i++) cin >> arr[i];
+}
+
 void solve(){
 
-    int n, k;
-    cin >> n >> k;
-    int arr[n];
-    for (int i = 0; i < n; ++i) cin >> arr[i];
+  int n,distinct=0; cin >> n;
+  arr_input(n);
 
-    ll tail=0,head=-1;
-    ll ans=0,sum=0;
+  for(int i=0;i<n;i++){
+    m[arr[i]]++;
+    if(m[arr[i]]==1) distinct++;
+  }
 
-    while (tail < n) {
-        ll nextHead = head + 1;
-
-        while (nextHead < n && (sum+arr[nextHead])<=k ) {
-            head++;
-            nextHead++;
-            sum+=arr[head];
-        }
-        ans += (head - tail + 1);
-        if (tail > head) {
-            tail++;
-            head = tail - 1;
-            sum=0;
-        } else {
-            sum-=arr[tail];
-            tail++;
-        }
+  int i=0,j=n-1;
+  while(i<j){
+    if(m[arr[i]]>1){
+      m[arr[i]]--;
     }
-
-    cout << ans << '\n';
+  }
 
 }
 
 
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);

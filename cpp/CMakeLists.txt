@@ -3,5 +3,4 @@ project(cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cpp
-        codechef/Starters141/RedundantArray.cpp)
+add_executable(cpp  algozenith/MinimumPenalty.cpp)

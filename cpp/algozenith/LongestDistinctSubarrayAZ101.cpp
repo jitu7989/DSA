@@ -30,32 +30,36 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.find(','); cerr << str.substr(0, idx) << " : " << t << ","; dbs(str.substr(idx + 1), s...);}
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
+int MAX_N = 100005;
+vector<int> arr(MAX_N);
+set<int> s;
 
 void solve(){
 
-    int n, k;
-    cin >> n >> k;
-    int arr[n];
+    int n;
+    cin >> n;
     for (int i = 0; i < n; ++i) cin >> arr[i];
-
-    ll tail=0,head=-1;
-    ll ans=0,sum=0;
+    int tail = 0, head = -1;
+    int ans = 0;
 
     while (tail < n) {
-        ll nextHead = head + 1;
+        int nextHead = head + 1;
+        while (nextHead < n && (s.find(arr[nextHead]) == s.end())  ) {
 
-        while (nextHead < n && (sum+arr[nextHead])<=k ) {
             head++;
             nextHead++;
-            sum+=arr[head];
+            s.insert(arr[head]);
+
         }
-        ans += (head - tail + 1);
+
+        ans = max(ans, head - tail + 1);
+
+
         if (tail > head) {
             tail++;
             head = tail - 1;
-            sum=0;
         } else {
-            sum-=arr[tail];
+            s.erase(s.find(arr[tail]));
             tail++;
         }
     }
@@ -66,7 +70,7 @@ void solve(){
 
 
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);

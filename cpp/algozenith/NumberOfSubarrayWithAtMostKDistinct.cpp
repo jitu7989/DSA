@@ -31,36 +31,45 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
-
-    int n, k;
-    cin >> n >> k;
-    int arr[n];
-    for (int i = 0; i < n; ++i) cin >> arr[i];
-
+ll getSubarraysWithAtMostKDistinct(vector<int> &arr,int n,int k) {
     ll tail=0,head=-1;
-    ll ans=0,sum=0;
+    ll ans=0,distinct=0;
+    map<int,int> freq;
 
     while (tail < n) {
         ll nextHead = head + 1;
 
-        while (nextHead < n && (sum+arr[nextHead])<=k ) {
+        while (nextHead < n && (freq[arr[nextHead]]>0 || distinct<k)  ) {
             head++;
             nextHead++;
-            sum+=arr[head];
+            freq[arr[head]]++;
+            if(freq[arr[head]]==1) distinct++;
         }
-        ans += (head - tail + 1);
+        ans += head-tail+1;
         if (tail > head) {
             tail++;
             head = tail - 1;
-            sum=0;
+            distinct = 0;
+            freq.clear();
         } else {
-            sum-=arr[tail];
+            freq[arr[tail]]--;
+            if(freq[arr[tail]]==0) distinct--;
             tail++;
         }
     }
+    return ans;
+}
 
-    cout << ans << '\n';
+void solve(){
+
+    int n, k;
+    cin >> n >> k;
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i) cin >> arr[i];
+
+    cout << getSubarraysWithAtMostKDistinct(arr,n,k) << '\n';  // At Most k
+    cout << getSubarraysWithAtMostKDistinct(arr,n,k)-getSubarraysWithAtMostKDistinct(arr,n,k-1) << '\n';  // At Equals k
+    cout << getSubarraysWithAtMostKDistinct(arr,n,k)- << '\n';  // More Than k
 
 }
 
