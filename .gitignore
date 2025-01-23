@@ -5,3 +5,32 @@ DSA.iml
 ./out/*
 **/vscode/
 **/cmake-build-debug/
+# IDE and build directories
+.idea/
+.vscode/
+cmake-build-debug/
+out/
+
+# Build artifacts and IDE config
+*.iml
+*.class
+*.o
+*.exe
+*.dll
+*.so
+*.dylib
+
+
+
+# Allow only source files
+*
+!*/
+!*.c
+!*.h
+!*.cpp
+!*.hpp
+!*.java
+!*.rs
+# Make sure to keep your build config if needed
+!CMakeLists.txt
+!Makefile
