@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll  = long long;
+using ii  = pair<ll,ll>;
+using vii = vector<ii>;
+using vi  = vector<int>;
+typedef set<int> si;
+typedef map<string, int> msi;
+
+#define INF 1000000000;
+
+//memset(memo, -1, sizeof memo); // initialize DP memoization table with -1
+//memset(arr, 0, sizeof arr);
+// to clear array of integers
+
+
+//---- Debugger ---- //
+int add_debugger = 0;
+#define debarr(a,n) cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;
+#define debmat(mat,row,col) cerr<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat[i][j]<<" ";cerr<<endl;}
+#define pr(...) dbs(#__VA_ARGS__, __VA_ARGS__)
+template <class S, class T>ostream& operator <<(ostream& os, const pair<S, T>& p) {return os << "(" << p.first << ", " << p.second << ")";}
+template <class T>ostream& operator <<(ostream& os, const vector<T>& p) {os << "[ "; for (auto& it : p) os << it << " "; return os << "]";}
+template <class T>ostream& operator <<(ostream& os, const unordered_set<T>& p) {os << "[ "; for (auto& it : p) os << it << " "; return os << "]";}
+template <class S, class T>ostream& operator <<(ostream& os, const unordered_map<S, T>& p) {os << "[ "; for (auto& it : p) os << it << " "; return os << "]";}
+template <class T>ostream& operator <<(ostream& os, const set<T>& p) {os << "[ "; for (auto& it : p) os << it << " "; return os << "]";}
+template <class T>ostream& operator <<(ostream& os, const multiset<T>& p) {os << "[ "; for (auto& it : p) os << it << " "; return os << "]";}
+template <class S, class T>ostream& operator <<(ostream& os, const map<S, T>& p) {os << "[ "; for (auto& it : p) os << it << " "; return os << "]";}
+template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";}
+template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.find(','); cerr << str.substr(0, idx) << " : " << t << ","; dbs(str.substr(idx + 1), s...);}
+template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
+ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
+
+
+ll fact[15];
+
+
+
+
+
+signed main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    fact[0] = 1;
+    fact[1] = 1;
+    for (int i = 2; i <= 14; ++i) fact[i] = fact[i-1]*i;
+    ll n,k; cin >> n >> k;
+    
+    set<int> s;
+    for (int i = 1; i <= n; ++i) s.insert(i);
+    debarr(fact,15);
+    for (int i = n; i >= 1; --i) {
+        if(i>14){
+          cout << n-i+1 << ' ';
+          s.erase(n-i+1);
+          continue;
+        }
+
+        int next = (k-1)/fact[i-1];
+        k -= (next*fact[i-1]);
+        pr(next, i,i-1,k-1,fact[i-1],next*fact[i-1],k,s);
+        auto it = s.begin();
+        while(next--) {
+            // cerr << "In loop\n";
+            it = s.upper_bound(*it);
+        }
+        int curr = *it;
+        s.erase(curr);
+        cout << curr << ' ';
+        
+    }
+    cout << '\n';
+
+    return 0;
+}
