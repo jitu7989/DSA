@@ -1,3 +1,16 @@
+# Allow only source files
+*
+!*/
+!*.c
+!*.h
+!*.cpp
+!*.hpp
+!*.java
+!*.rs
+# Make sure to keep your build config if needed
+!CMakeLists.txt
+!Makefile
+
 **/.idea/
 DSA.iml
 **/out/
@@ -22,15 +35,4 @@ out/
 
 
 
-# Allow only source files
-*
-!*/
-!*.c
-!*.h
-!*.cpp
-!*.hpp
-!*.java
-!*.rs
-# Make sure to keep your build config if needed
-!CMakeLists.txt
-!Makefile
+
