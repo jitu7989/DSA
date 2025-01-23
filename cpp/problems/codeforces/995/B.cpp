@@ -1,3 +1,6 @@
+//
+// Created by jitendra on 12/22/24.
+//
 #include <bits/stdc++.h>
 using namespace std;
 using ll  = long long;
@@ -31,31 +34,27 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-int  MAX_N=1e5+7;
-vector<int> arr(MAX_N);
-map<int,int> m;
+void solve() {
+    int n,a,b,c;
+    cin >> n >> a >> b >> c;
 
-void arr_input(int n){
-    for(int i=0;i<n;i++) cin >> arr[i];
-}
+    int dist_of_three_days = (a+b+c);
+    int total_distance_travelled = (n/dist_of_three_days)*dist_of_three_days;
+    int days = 3*(n/dist_of_three_days);
 
-void solve(){
-
-  int n,distinct=0; cin >> n;
-  arr_input(n);
-
-  for(int i=0;i<n;i++){
-    m[arr[i]]++;
-    if(m[arr[i]]==1) distinct++;
-  }
-
-  int i=0,j=n-1;
-  while(i<j){
-    if(m[arr[i]]>1){
-      m[arr[i]]--;
+    if (total_distance_travelled<n) {
+        total_distance_travelled += a;
+        days++;
     }
-  }
-
+    if (total_distance_travelled<n) {
+        total_distance_travelled += b;
+        days++;
+    }
+    if (total_distance_travelled<n) {
+        total_distance_travelled += c;
+        days++;
+    }
+    cout << days << '\n';
 }
 
 

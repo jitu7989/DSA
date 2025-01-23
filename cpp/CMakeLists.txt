@@ -3,4 +3,5 @@ project(cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cpp  algozenith/MinimumPenalty.cpp)
+add_executable(cpp
+        problems/algozenith/3Sum.cpp)

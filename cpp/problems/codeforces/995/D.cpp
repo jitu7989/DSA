@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 using ll  = long long;
@@ -31,9 +32,25 @@ template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.
 template <class T> void prc(T a, T b) {cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 
-void solve(){
+bool comparing(vector<ll> &a, vector<ll> &b) {
+    return a[1]<b[1];
 }
+void solve() {
+    ll n, k; cin >> n >> k;
+    vector<vector<ll>> arr(n);
+    ll low = 1, high = 0;
 
+    for (int i = 0; i < n; ++i) {
+        ll a, b; cin >> a >> b;
+        arr[i].push_back(a);
+        arr[i].push_back(b);
+        high = max(high,b);
+    }
+
+    sort(arr.begin(),arr.end(),comparing);
+    
+
+}
 
 
 signed main(){
