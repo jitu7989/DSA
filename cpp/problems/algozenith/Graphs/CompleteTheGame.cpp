@@ -39,20 +39,45 @@ template <class T> void prc(T a, T b) {if(DEBUG){cerr << "["; for (T i = a; i !=
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+ll mod = 1e9+7;
 
-int n,m;
-vector<vector<char>> board;
-vector<vector<int>> dis;
+vector<vector<int>> g;
+vector<int> indgree;
+vector<ll> dp;
 
-int dx[]={ 0, 0, 1,-1};
-int dy[]={-1, 1, 0, 0};
 
 
 void solve(){
     int n,m;
-    cin>>n>>m;
-    
+    cin >> n >>  m;
+    g.resize(n+1);
+    indgree.assign(n+1,0);
+    dp.assign(n+1,0);
 
+
+    for (int i = 0; i < m; ++i) {
+        int a,b; cin >> a >> b;
+        g[a].push_back(b);
+        indgree[b]++;
+    }
+
+    dp[1] = 1;
+    queue<int> q;
+    for (int i=1;i<=n;++i){
+        if(!indgree[i]) q.push(i);
+    }
+    
+    while(!q.empty()){
+        int node = q.front(); q.pop();
+        for (auto neigbour:g[node]){
+            indgree[neigbour]--;
+            dp[neigbour] = (dp[neigbour]+dp[node])%mod;
+            if(!indgree[neigbour]){
+                q.push(neigbour);
+            }
+        }
+    }
+    cout << dp[n] << '\n';
 }
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -63,3 +88,10 @@ signed main(){
 
     return 0;
 }
+
+
+//          1
+// 2     3       4
+// 5     6       7
+// 8     9       10
+//       11

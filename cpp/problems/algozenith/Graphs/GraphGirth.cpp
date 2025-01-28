@@ -12,7 +12,7 @@ typedef map<string, int> msi;
 #define mp make_pair
 
 // Debug mode control
-#define DEBUG 0  // Set to 1 to enable debugging, 0 to disable
+#define DEBUG 1  // Set to 1 to enable debugging, 0 to disable
 
 // Debugger macros that check DEBUG flag
 #define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;}
@@ -41,53 +41,56 @@ ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 
 int n,m;
+int mn = 1e9;
 vector<vector<int>> g;
-vector<int> indeg;
+vector<int> dis;
 
+
+void bfs(int start){
+    queue<int> q;
+    q.push(start);
+    dis[start] = 0;
+    pr(start);
+    while(!q.empty()){
+        int node = q.front(); q.pop();
+        pr(node, g[node]);
+        for (int neighbour:g[node]) {
+            if(dis[neighbour]==1e9){
+                dis[neighbour] = dis[node]+1;
+                q.push(neighbour);
+            }
+            else if(dis[node]<=dis[neighbour]){ // Not go back on parent node 
+                mn = min(mn,dis[node]+dis[neighbour]+1);
+                if (dis[node] == dis[neighbour]) return;  // for odd length cycles optimization
+            }
+        }
+    }
+
+}
 
 void solve(){
-    int n,m;
-    cin>>n>>m;
+    cin>>n>> m;
     g.resize(n+1);
-    indeg.resize(n+1);
     for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
+        int a,b;cin >> a >> b;
         g[a].push_back(b);
-        indeg[b]++;
+        g[b].push_back(a);
     }
-
-    priority_queue<int> q;
+    pr(n,m,g);
     for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
-    }
-
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
-        }
-    }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
+        dis.assign(n+1,1e9);
+        bfs(i);
     }
     
-
+    cout << (mn==1e9?-1:mn) << '\n';
+    
 }
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
-        solve();
+    solve();
 
     return 0;
 }

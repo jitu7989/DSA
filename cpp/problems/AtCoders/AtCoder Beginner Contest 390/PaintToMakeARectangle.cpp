@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll  = long long;
-using ii  = pair<int,int>;
+using ii  = pair<ll,ll>;
 using vii = vector<ii>;
 using vi  = vector<int>;
 typedef set<int> si;
@@ -39,55 +39,41 @@ template <class T> void prc(T a, T b) {if(DEBUG){cerr << "["; for (T i = a; i !=
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
-
-int n,m;
-vector<vector<int>> g;
-vector<int> indeg;
-
-
 void solve(){
     int n,m;
-    cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
-    }
-
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
+    cin >> n >> m;
+    char board[n][m];
+    int top = 1e9, left=1e9, right = -1,bottom=-1;
+    for (int i = 0; i<n; ++i) {
+        for (int j = 0; j < m; ++j){
+            cin >> board[i][j];
+            if(board[i][j]=='#'){
+                top = min(i,top);
+                bottom = max(i,bottom);
+                left = min(j,left);
+                right = max(j,right);
+            }
         }
     }
+    pr(top,bottom,left,right);
 
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
+    int f = 1;
+    for (int i = top; i<=bottom && f; ++i) {
+        for (int j = left; j<=right && f; ++j){
+            f = board[i][j]!='.';
         }
     }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
-    
-
+    cout << (f?"Yes":"No");
 }
+
+
+
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
-        solve();
+    solve();
 
     return 0;
 }

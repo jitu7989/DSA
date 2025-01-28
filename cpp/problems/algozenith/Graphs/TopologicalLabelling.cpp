@@ -41,53 +41,49 @@ ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 
 int n,m;
+int mn = 1e9;
 vector<vector<int>> g;
-vector<int> indeg;
+vector<int> out_degree;
+vector<int> labels;
+
 
 
 void solve(){
-    int n,m;
     cin>>n>>m;
     g.resize(n+1);
-    indeg.resize(n+1);
+    out_degree.assign(n+1,0);
+    labels.assign(n+1,0);
     for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
+        int a,b;cin >> a >> b;
+        g[b].push_back(a);
+        out_degree[a]++;
     }
 
+
+    int label = n;
     priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
-    }
-
-    vector<int> ans;
+    for (int i = 1; i <= n; ++i) 
+        if(!out_degree[i]) q.push(i);
     while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
+        int node=q.top();q.pop();
+        labels[node]=label--;
+        for(auto neighbour:g[node]){
+            out_degree[neighbour]--;
+            if(out_degree[neighbour]==0){
+                q.push(neighbour);
+            }
         }
     }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
+    for (int i = 1; i <= n; ++i) cout << labels[i] << ' ';
+    cout << '\n';
     
-
 }
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
-        solve();
+    solve();
 
     return 0;
 }

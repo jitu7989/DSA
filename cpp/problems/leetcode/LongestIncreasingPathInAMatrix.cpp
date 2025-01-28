@@ -12,7 +12,7 @@ typedef map<string, int> msi;
 #define mp make_pair
 
 // Debug mode control
-#define DEBUG 0  // Set to 1 to enable debugging, 0 to disable
+#define DEBUG 1  // Set to 1 to enable debugging, 0 to disable
 
 // Debugger macros that check DEBUG flag
 #define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;}
@@ -40,54 +40,50 @@ ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 
-int n,m;
-vector<vector<int>> g;
-vector<int> indeg;
+int dx[] = {0,0,1,-1};
+int dy[] = {1,-1,0,0};
 
-
-void solve(){
-    int n,m;
-    cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
-    }
-
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
-    }
-
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
-        }
-    }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
-    
-
+bool comp(pair<int,pair<int,int>> &a, pair<int,pair<int,int>> &b){
+		return b.F<a.F;
 }
-signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
 
-        solve();
+class Solution {
+public:
 
-    return 0;
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+    	
+    	vector<pair<int,pair<int,int>>> g;
+    	vector<vector<int>> dist(matrix.size(),vector<int>(matrix[0].size(),-1));
+    	for (int i = 0; i < matrix.size(); ++i){
+    		for (int j = 0; j < matrix[i].size(); j++){
+    			g.push_back(make_pair(matrix[i][j],make_pair(i,j)));
+    		}
+    	}
+    	sort(g.begin(),g.end(),comp);
+    	pr(g);
+    	int ans = 1;
+    	for (auto a:g) {
+    		int mx = 1;
+    		for (int i = 0; i < 4; ++i){
+    			int tx = a.S.F+dx[i];
+    			int ty = a.S.S+dy[i];
+    			if(tx<0 || tx>=matrix.size() || ty<0 || ty >= matrix[0].size()){
+    				continue;
+    			}
+    			if(a.F<matrix[tx][ty]) mx = max(mx, 1+dist[tx][ty]);
+    		}
+    		dist[a.S.F][a.S.S] = mx;
+    		ans = max(ans,dist[a.S.F][a.S.S]);
+    		pr(a,dist);
+    	}
+
+    	return ans;
+    }
+};
+
+int main(){
+
+	vector<vector<int>> matrix1 = {{9,9,4},{6,6,8},{2,1,1}};
+	Solution s;
+	cout << s.longestIncreasingPath(matrix1) << '\n';
 }

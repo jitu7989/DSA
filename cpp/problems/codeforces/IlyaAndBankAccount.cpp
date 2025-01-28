@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll  = long long;
-using ii  = pair<int,int>;
+using ii  = pair<ll,ll>;
 using vii = vector<ii>;
 using vi  = vector<int>;
 typedef set<int> si;
@@ -12,7 +12,7 @@ typedef map<string, int> msi;
 #define mp make_pair
 
 // Debug mode control
-#define DEBUG 0  // Set to 1 to enable debugging, 0 to disable
+#define DEBUG 1  // Set to 1 to enable debugging, 0 to disable
 
 // Debugger macros that check DEBUG flag
 #define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;}
@@ -39,54 +39,33 @@ template <class T> void prc(T a, T b) {if(DEBUG){cerr << "["; for (T i = a; i !=
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
-
-int n,m;
-vector<vector<int>> g;
-vector<int> indeg;
-
-
 void solve(){
-    int n,m;
-    cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
-    }
-
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
-    }
-
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
-        }
-    }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
-    
-
+	int n; cin >> n;
+	if(n>=0){
+		cout  << n;
+	}
+	else{
+		string s = to_string(n);
+		int m = s.length();
+		pr(m,s, m<=3,  m<=3 && (m==2 || s[m-1]==0 || s[m-2]==0));
+		if(m<=3 && (m==2 || s[m-1]=='0' || s[m-2]=='0')  ){
+			cout << 0;
+		}
+		else if(s[m-1]>=s[m-2] ){
+			for (int i = 0; i < m; ++i) if(i!= (m-1)) cout << s[i];
+		}
+		else{
+			for (int i = 0; i < m; ++i) if(i!= (m-2)) cout << s[i];
+		}
+	}
 }
+
+
+
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
         solve();
 
     return 0;

@@ -40,54 +40,115 @@ ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 
-int n,m;
+int n,k;
 vector<vector<int>> g;
-vector<int> indeg;
+int visited[110][10];
+int dx[] = { 0, 0, 1,-1};
+int dy[] = {-1, 1, 0, 0};
 
+void proccessFall(){
+    for (int col = 0; col < 10; col++) {
+        int found_top=-1; 
 
-void solve(){
-    int n,m;
-    cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
+        for (int row=n-1; row>=0; row--) {
+            if(g[row][col]==0 && found_top==-1){
+                found_top = row;
+            }
+            
+            if(g[row][col]!=0 && found_top!=-1){
+                g[found_top][col] = g[row][col];
+                g[row][col] = 0;
+                found_top--;
+            }
+            pr(row,col,found_top);
+
+        }
     }
+}
 
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
+
+
+int  proccessPop(){
+    int poppedAny = false;
+    memset(visited,0,sizeof(visited));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            
+            if(!visited[i][j] && g[i][j] ){
+                
+                vector<ii> componentNodes;
+                queue<ii> q;
+                visited[i][j] = 1;
+                q.push(mp(i,j));
+
+                int color = g[i][j];
+                while(!q.empty()){
+                    ii node = q.front(); q.pop();
+                    componentNodes.push_back(node);
+                    for (int i = 0; i < 4; ++i) {
+                        int tx = node.F+dx[i];
+                        int ty = node.S+dy[i];
+                        if(tx<0 || ty<0 ||  tx>=n || ty>=10) continue;
+
+                        if(!visited[tx][ty] && g[tx][ty]==color){
+                            visited[tx][ty] = 1;
+                            q.push(mp(tx,ty));
+                        }
+                    }
+                }
+
+                // pop cells
+                if(componentNodes.size()>=k){
+                    poppedAny = 1;
+                    for(auto node:componentNodes){
+                        g[node.F][node.S] = 0;
+                    }
+                }
+
+
+            }
+
         }
     }
 
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
-        }
-    }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
-    
+    return poppedAny;
 
 }
-signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+void printGraph(){
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            cout << g[i][j];
+        }
+        cout << '\n';
+    }
+}
 
-        solve();
+void solve(){
+    cin>>n>>k;
+
+    g.resize(n);
+    for (int i = 0; i < n; ++i) {
+        string s; cin >> s;
+        g[i].resize(10);
+        for (int j = 0; j < 10; ++j) {
+            g[i][j] = s[j]-'0';
+        }
+    }
+    pr(n,k,g);
+    proccessFall();
+
+    while(proccessPop()){
+        proccessFall();
+    }
+
+    printGraph();
+}
+signed main(){
+    // ios_base::sync_with_stdio(0);
+    // cin.tie(0);
+    // cout.tie(0);
+
+    solve();
 
     return 0;
 }

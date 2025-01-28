@@ -39,55 +39,65 @@ template <class T> void prc(T a, T b) {if(DEBUG){cerr << "["; for (T i = a; i !=
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
-
+int N = 1e5+2;
 int n,m;
 vector<vector<int>> g;
-vector<int> indeg;
+vector<vector<int>> r;
+vector<int> dist;
+
+
 
 
 void solve(){
-    int n,m;
     cin>>n>>m;
+
+    dist.assign(n+1,1e9);
+    g.clear();
+    r.clear();
     g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
+    r.resize(n+1);
+
+    for (int i = 0; i < m; ++i){
+        int a,b;cin >> a >> b;
         g[a].push_back(b);
-        indeg[b]++;
+        r[b].push_back(a);
     }
 
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
-    }
+    deque<int> q;
+    q.push_back(1);
+    dist[1] = 0;
 
-    vector<int> ans;
     while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
+        int node = q.front();q.pop_front();
+
+        // no cost
+        for (auto neigbhour:g[node]){
+            if( dist[node] < dist[neigbhour] ){
+                q.push_front(neigbhour);
+                dist[neigbhour] = dist[node];
+            }
         }
+        // cost
+        for (auto neigbhour:r[node]){
+            if( (dist[node]+1) < dist[neigbhour] ){
+                q.push_back(neigbhour);
+                dist[neigbhour] = dist[node]+1;
+            }
+        }
+
     }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
-    
+    cout << dist[n] << '\n';
+        
 
 }
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
+    int t; cin >> t;
+    while(t--)
         solve();
 
     return 0;
 }
+

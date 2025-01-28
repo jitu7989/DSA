@@ -12,7 +12,7 @@ typedef map<string, int> msi;
 #define mp make_pair
 
 // Debug mode control
-#define DEBUG 0  // Set to 1 to enable debugging, 0 to disable
+#define DEBUG 1  // Set to 1 to enable debugging, 0 to disable
 
 // Debugger macros that check DEBUG flag
 #define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;}
@@ -41,45 +41,61 @@ ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 
 int n,m;
-vector<vector<int>> g;
-vector<int> indeg;
+vector<vector<int>> board;
+vector<vector<int>> dist;
 
+int dx[]={ 0, 0, 1,-1};
+int dy[]={ 1,-1, 0, 0};
+
+int range(ii p){
+    return p.F>=1 && p.S>=1 && p.F<=n && p.S<=m;
+}
 
 void solve(){
-    int n,m;
+
     cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
-    }
-
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
+    board.assign(n+1,vector<int>(m+1));
+    dist.assign(n+1,vector<int>(m+1,1e9));
+    for (int i=1;i<=n;++i){
+        for (int j=1;j<= m;++j){
+            cin >> board[i][j];
         }
     }
 
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
-        }
-    }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
+    deque<ii> q;
+    q.push_back(mp(1,1));
+    dist[1][1] = 0;
     
+    while(!q.empty()){
+        ii node = q.front(); q.pop_front();
+
+        string s ="";
+        if(DEBUG) s+="Node (" + to_string(node.F) +","+to_string(node.S)+") ";
+        for (int i = 0; i < 4; ++i){
+            ii neighbour = mp(node.F+dx[i] , node.S+dy[i]);
+            if(!range(neighbour) ) continue;
+
+            int cost = (i+1)!=board[node.F][node.S];
+
+            if((dist[node.F][node.S]+cost)<dist[neighbour.F][neighbour.S] ){ // Takes Zero Cost 
+
+                if(DEBUG) s+=" Neighbour Node (" + to_string(neighbour.F) +","+to_string(neighbour.S)+") ";
+
+                if(cost) q.push_back(neighbour);
+                else q.push_front(neighbour);
+
+                dist[neighbour.F][neighbour.S] = (dist[node.F][node.S]+cost);
+            }
+
+        }
+        if(DEBUG){
+            for (auto x:q) cerr << x << " ";
+            cerr << '\n';
+            cerr << s << '\n';
+        }
+    }
+
+    cout << dist[n][m];
 
 }
 signed main(){
@@ -87,7 +103,7 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-        solve();
+    solve();
 
     return 0;
 }

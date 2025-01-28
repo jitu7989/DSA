@@ -40,46 +40,87 @@ ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 
-int n,m;
-vector<vector<int>> g;
-vector<int> indeg;
+
+vector<vector<char>> board;
+vector<vector<int>> dis;
+  
+int dx[]={ 0, 0, 1,-1};
+int dy[]={-1, 1, 0, 0};
 
 
 void solve(){
     int n,m;
     cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
+    board.resize(n);
+    dis.resize(n);
+    for (int i = 0; i < n; ++i){
+        board[i].resize(m);
+        dis[i].resize(m);
+        fill(dis[i].begin(), dis[i].end(), -1);
     }
 
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
-    }
+    for(int i=0;i<n;++i)
+        for(int j=0;j<m;++j)
+            cin >> board[i][j];
 
-    vector<int> ans;
+    queue<ii> q;
+    ii person;
+    // Adding All Monsters to Queue And locating person
+    for(int i=0;i<n;++i)
+        for(int j=0;j<m;++j)
+            if(board[i][j]=='M') 
+                q.push(mp(i,j));
+            else if(board[i][j]=='A')
+                person = mp(i,j);
+
+    int dist = 0;
     while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
+        int size = q.size();
+        for (int i = 0; i < size; ++i) {
+            ii node = q.front(); q.pop();
+            dis[node.F][node.S] = dist;
+            // Connected node add to q
+            for (int choice = 0; choice < 4; choice++) {
+                int tx=node.F+dx[choice];
+                int ty=node.S+dy[choice];
+                if(tx>=0 && tx<n && ty>=0 && ty<m && (board[tx][ty]=='.' || board[tx][ty]=='A') && dis[tx][ty]==-1) {
+                    q.push(mp(tx,ty));
+                }
+            }
         }
+        dist++;
     }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
+    pr(dis);
+    q.push(person);
+    dist = 0;
+    int exitFound = -1;
+    while(!q.empty() && exitFound==-1){
+        int size = q.size();
+        for (int i = 0; i < size; ++i) {
+            ii node = q.front(); q.pop();
+            // Exit Found
+            if(node.F==0 || node.F==(n-1) || node.S==0 || node.S==(m-1)){
+                exitFound = dist;
+                break;
+            }
+            // Connected node add to q
+            for (int choice = 0; choice < 4; choice++) {
+                int tx=node.F+dx[choice];
+                int ty=node.S+dy[choice];
+                if(tx>=0 && tx<n && ty>=0 && ty<m && board[tx][ty]=='.' && (dis[tx][ty]==-1 || (dist+1)<dis[tx][ty] )) {
+                    q.push(mp(tx,ty));
+                }
+            }
+        }
+        dist++;
+    }
+    if(exitFound==-1){
+        cout << "NO\n";
     }
     else{
-        cout << -1 << '\n';
+        cout << "YES\n";
+        cout << exitFound << '\n';
     }
-    
 
 }
 signed main(){

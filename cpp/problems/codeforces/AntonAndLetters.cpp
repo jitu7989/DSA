@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll  = long long;
-using ii  = pair<int,int>;
+using ii  = pair<ll,ll>;
 using vii = vector<ii>;
 using vi  = vector<int>;
 typedef set<int> si;
@@ -39,54 +39,25 @@ template <class T> void prc(T a, T b) {if(DEBUG){cerr << "["; for (T i = a; i !=
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
-
-int n,m;
-vector<vector<int>> g;
-vector<int> indeg;
-
-
 void solve(){
-    int n,m;
-    cin>>n>>m;
-    g.resize(n+1);
-    indeg.resize(n+1);
-    for (int i = 0; i < m; ++i) {
-        int a,b; cin >> a >> b;
-        g[a].push_back(b);
-        indeg[b]++;
-    }
+    string s; 
+    getline(cin,s);
 
-    priority_queue<int> q;
-    for (int i = 1; i <= n; ++i) {
-        if(indeg[i]==0){
-            q.push(-i);
-        }
+    set<char> st;
+    pr(s);
+    for (char c:s) {
+        pr(c);
+        if('a'<=c && c<='z')st.insert(c);
     }
-
-    vector<int> ans;
-    while(!q.empty()){
-        int node = -q.top(); q.pop();
-        ans.push_back(node);
-        for (auto neigbour:g[node]){
-            indeg[neigbour]--;
-            if(!indeg[neigbour]) q.push(-neigbour);
-        }
-    }
-    if(ans.size()==n){
-        for(auto x:ans) cout << x << ' ';
-        cout << '\n';    
-    }
-    else{
-        cout << -1 << '\n';
-    }
-    
-
+    cout << st.size();
 }
+
+
+
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
         solve();
 
     return 0;
