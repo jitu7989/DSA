@@ -18,10 +18,10 @@ typedef map<string, int> msi;
 #endif
 
 // Debugger macros that check DEBUG flag
-#define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;}
-#define debmat(mat,row,col) if(DEBUG){cerr<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat[i][j]<<" ";cerr<<endl;}}
+#define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a{i]<<" "; cerr<<endl;}
+#define debmat(mat,row,col) if(DEBUG){cerr<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat{i]{j]<<" ";cerr<<endl;}}
 #define pr(...) if(DEBUG){dbs(#__VA_ARGS__, __VA_ARGS__);}
-#define debset(set) if(DEBUG){cerr<<#set<<" : [ "; for(auto x:set){cerr<<x<<" ";} cerr<<"]\n";} 
+#define debset(set) if(DEBUG){cerr<<#set<<" : { "; for(auto x:set){cerr<<x<<" ";} cerr<<"]\n";} 
 #define debmap(map) if(DEBUG){cerr<<#map<<" : [ "; for(auto x:map){cerr<<"{"<<x.F<<":"<<x.S<<"} ";} cerr<<"]\n";}
 
 // Stream operators for debugging
@@ -33,20 +33,56 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
-void solve(){
-}
+
+int dx[]={ 0, 0, 1,-1};
+int dy[]={ 1,-1, 0, 0};
+vector<vector<int>> dist;
+
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        dist.assign(n,vector<int>(m,1e9));
+        priority_queue<pair<int,ii>> q; 
+        q.push(mp(-grid[0][0],mp(0,0)));
+
+        dist[0][0] = grid[0][0];
+
+        while(!q.empty()){
+            auto el = q.top(); q.pop();
+
+            int efforts = -el.F;
+            ii node = el.S;
+
+            for (int i = 0; i < 4; ++i){
+                int tx = node.F+dx[i];
+                int ty = node.S+dy[i];
+                if(tx<0 || ty<0 || tx>=n || ty>=m) continue;
+                int updated_efforts = max((grid[tx][ty]==1e9?0:grid[tx][ty]), efforts);
+                if(tx==n-1 && ty==m-2 && DEBUG)  {
+
+                    pr(tx,ty,updated_efforts,el);
+                    cerr << "=====================================\n";
+                }
+                if(updated_efforts<dist[tx][ty]){
+                    dist[tx][ty]=updated_efforts;
+                    q.push({-updated_efforts,{tx,ty}});
+                }
+            }
+        }
+        return dist[n-1][m-1];
+    }
+};
 
 
-
-signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    int tc;
-    cin >> tc;
-    while(tc--) 
-        solve();
-
-    return 0;
+int main(){
+    Solution s;
+    vector<vector<int>> grid1 = {{1,1,1,1},{2,2,2,2},{1,1,1,1},{2,2,2,2}};
+    vector<vector<int>> grid2 = {{0,1,2,3,4},{24,23,22,21,5},{12,13,14,15,16},{11,17,18,19,20},{10,9,8,7,6}};
+    vector<vector<int>> grid3 = {{3,2},{0,1}};
+    // cout<< s.swimInWater(grid1) << '\n';
+    // cout<< s.swimInWater(grid2) << '\n';
+    cout<< s.swimInWater(grid3) << '\n';
 }

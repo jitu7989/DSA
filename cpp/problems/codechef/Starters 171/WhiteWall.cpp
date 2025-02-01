@@ -9,7 +9,6 @@ typedef map<string, int> msi;
 #define INF 1000000000;
 #define F first
 #define S second
-#define mp make_pair
 
 #ifdef CUSTOM_BUILD
     #define DEBUG 1  
@@ -33,7 +32,25 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+
+
 void solve(){
+    int n; string s; cin >> n >> s;
+    char arr[] = {'B','G','R'};
+    int mn = n-1;
+
+    int p = 0;
+    do{
+        int x = 0;
+        for (int i = 0; i < n; ++i){
+            if(arr[i%3]!=s[i]) x++;
+        }
+        debarr(arr,3);
+        mn = min(x,mn);
+    }
+    while(next_permutation(arr,arr+3));
+    cout << mn << '\n';
+    if(DEBUG)cerr << "================\n";
 }
 
 

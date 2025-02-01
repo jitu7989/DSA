@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll  = long long;
-using ii  = pair<ll,ll>;
+using ii  = pair<int,int>;
 using vii = vector<ii>;
 using vi  = vector<int>;
 typedef set<int> si;
@@ -33,7 +33,47 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+vector<vector<pair<ll,ll>>> g;
+vector<ll> dist;
+vector<int> visited;
+
 void solve(){
+
+    int n,m; 
+    cin >> n >> m;
+    ll a,b,c;
+    dist.resize(n+1,1e18);
+    visited.resize(n+1,false);
+
+    g.resize(n+1);
+    for (int i = 0; i < m; ++i){
+        cin >> a >> b >> c;
+        g[a].push_back({c,b});
+    }
+
+    priority_queue<pair<ll,ll>> q;
+    q.push(make_pair(0,1));
+    dist[1] = 0;
+
+    while(!q.empty()){
+        ii node=q.top(); q.pop();
+        ll curr_dist = -node.F;
+        ll curr_node = node.S;
+        if(visited[curr_node]) continue;
+        visited[curr_node] = true;
+        for(auto &neighbour:g[curr_node]){
+            ll neighbour_dist = neighbour.F;
+            ll neighbour_node=  neighbour.S;
+            ll reaching_distance = neighbour_dist+dist[curr_node];
+            if( reaching_distance<dist[neighbour_node] ){
+                dist[neighbour_node] = reaching_distance;
+                q.push(make_pair(-reaching_distance,neighbour_node));
+            }
+        }
+    }
+    for (int i = 1; i <= n; ++i) {
+       cout << dist[i] << " ";
+    }
 }
 
 
@@ -42,11 +82,6 @@ signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
-    int tc;
-    cin >> tc;
-    while(tc--) 
-        solve();
-
+    solve();
     return 0;
 }

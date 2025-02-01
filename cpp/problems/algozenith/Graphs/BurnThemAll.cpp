@@ -33,20 +33,56 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+
+
 void solve(){
+    int n,m,start; cin >> n >> m;
+    vector<pair<pair<int,int>,ll>> edges;
+
+    vector<vector<pair<int,ll>>> g;
+    g.resize(n+1); 
+
+    vector<ll> dist;
+    dist.assign(n+1,1e18);
+
+    for (int i = 0; i < m; ++i) {
+        int u,v; cin >> u >> v;
+        ll d; cin >> d;
+        g[u].push_back(make_pair(v,d));
+        g[v].push_back(make_pair(u,d));
+        edges.push_back({{u,v},d});
+    }
+
+    cin >> start;
+    pr(g,edges);
+    priority_queue<pari<ll,int>> q;
+
+
+    while(!q.empty()){
+        auto node = q.top(); q.pop();
+
+        ll  curr_dist = node.S;
+        int curr_node = node.F;
+
+        for(auto neighbour:g[curr_node]){
+            
+            int neighbour_node = neighbour_node.F;
+            ll neighbour_dist  = neighbour_node.S;
+            
+            ll reaching_distance = curr_dist+neighbour.S;
+
+            if(){
+
+            }
+
+        }
+    }
+
 }
-
-
-
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
-    int tc;
-    cin >> tc;
-    while(tc--) 
-        solve();
-
+    solve();
     return 0;
 }

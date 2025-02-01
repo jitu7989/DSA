@@ -9,7 +9,6 @@ typedef map<string, int> msi;
 #define INF 1000000000;
 #define F first
 #define S second
-#define mp make_pair
 
 #ifdef CUSTOM_BUILD
     #define DEBUG 1  
@@ -33,7 +32,65 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+
+// TODO
 void solve(){
+    int n,p; cin >> n >> p;
+    int arr[n]; for (int i = 0; i < n; ++i) cin >> arr[i];
+    int protectionFromLeft[n],protectionFromRight[n], effectiveProtection[n];
+    int maximum = 1e9+10;
+    int mx = 0;
+    int volcano_found = 0;
+
+    for (int i = 0; i < n; ++i){
+        if(arr[i]==0) {
+            volcano_found=1;
+            mx = 0;
+        }
+        if(volcano_found){
+            protectionFromLeft[i] = max(mx,arr[i]);
+            mx = protectionFromLeft[i];
+        }
+        else {
+            protectionFromLeft[i] = -1;
+        }
+        
+    }
+    
+    mx = 0;
+    volcano_found = 0;
+    
+    for (int i = n-1; i>=0; i--){
+        if(arr[i]==0) {
+            volcano_found=1;
+            mx = 0;
+        }
+
+        if(volcano_found){
+            protectionFromRight[i] = max(mx,arr[i]);
+            mx = protectionFromRight[i];
+        }
+        else {
+            protectionFromRight[i] = -1;
+        }
+        
+    }
+    for (int i = 0; i < n; ++i){
+        int mxx = max(protectionFromLeft[i],protectionFromRight[i]);
+        int mnn = min(protectionFromLeft[i],protectionFromRight[i]);
+        pr(i,mnn,mxx);
+        if(mnn==-1) effectiveProtection[i] = mxx;
+        else effectiveProtection[i] = mnn;
+    }
+    debarr(protectionFromLeft,n);
+    debarr(protectionFromRight,n);
+    debarr(effectiveProtection,n);
+    for (int i = 0; i < n; ++i) {
+        if(arr[i] == 0) cout << "0 ";
+        else cout << (int)ceil((double)effectiveProtection[i]/(double)p) << ' ';
+    }
+    cout << '\n';
+    if(DEBUG)cerr<<"=======================\n";
 }
 
 

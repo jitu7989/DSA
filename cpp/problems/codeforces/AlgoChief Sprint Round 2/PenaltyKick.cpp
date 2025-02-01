@@ -34,6 +34,35 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 void solve(){
+    int n,m,k; cin >> n >> m >> k;
+    int a[n],b[n];
+    for (int i = 0; i < n; ++i) cin >> a[i];
+    for (int i = 0; i < n; ++i) cin >> b[i];
+
+    int x=0, y=0;
+    int x1=0, y1=0;
+    for (int i = 0; i < n; ++i) {
+        if(a[i]>=((k+1)/2) ){
+            x++;
+            x1 = max(x1,a[i]);
+        }
+        if(b[i]>=(m+1)/2){
+            y++;
+            y1 = max(y1,b[i]);
+        }
+    }
+    if(x>y){
+        cout << "Alice";
+    }
+    else if(x==y){
+        if(x1>=y1) cout << "Alice";
+        else cout << "Bob";
+    }
+    else{
+        cout << "Bob";
+    }
+    cout << '\n';
+
 }
 
 

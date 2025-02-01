@@ -33,7 +33,56 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+int N,m;
+vector<vector<pair<int,int>>>  grid;
+vector<int> blocks;
 void solve(){
+    cin >> N >> m;
+    grid.resize(m);
+    blocks.assign(N+1,1e9+10);
+    for (int i = 1; i <= N; ++i){
+        int row,col;
+        cin >> col >> row; col--; row--;
+        grid[col].push_back({row,i});
+    }
+
+    int max_destroyed_rows = grid[0].size();
+    for (int i = 0; i < m; ++i){
+        sort(grid[i].begin(),grid[i].end());
+        int cells = grid[i].size();
+        max_destroyed_rows = min( cells, max_destroyed_rows);
+    }
+    for (int i = 0; i < max_destroyed_rows; ++i){
+        int mx = 0;
+        for (int j = 0; j < m; ++j){
+            mx = max(mx,grid[j][i].F);
+        }
+
+        for (int j = 0; j < m; ++j){
+            auto block = grid[j][i];
+            blocks[block.S] = mx;
+        }
+    }
+
+    pr(blocks);
+    int q; cin >>q;
+    while(q--){
+        double ti;
+        int  aj;
+        cin >> ti >> aj;
+
+        bool ans = blocks[aj]==(1e9+10) || (((double)blocks[aj])+0.5)>=(ti+0.5);
+        pr(aj, ti+0.5, blocks[aj], ans);
+
+        if(ans){
+            cout << "Yes";
+        }
+        else{
+            cout << "No";
+        }
+        cout<<"\n";
+    }
+
 }
 
 
@@ -43,9 +92,6 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) 
         solve();
 
     return 0;

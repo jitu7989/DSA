@@ -32,16 +32,50 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+int _ = [](){ std::ios_base::sync_with_stdio(false); std::cin.tie(nullptr); return 0; }();
 
-void solve(){
-}
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
 
+        vector<vector<pair<int,int>>> g(n+1);
+        for(auto &a:times) g[a[0]].push_back({a[2],a[1]});
 
+        vector<int> dist(n+1,1e9);
+        priority_queue<pair<int,int>> q;
+        q.push({0,k});
+        dist[k] = 0;
+
+        while(!q.empty()){
+            auto node = q.top(); q.pop();
+
+            int curr_dist = -node.F;
+            int curr_node = node.S;
+
+            for(auto neighbour:g[curr_node]){
+                int neighbour_dist = neighbour.F;
+                int neighbour_node = neighbour.S;
+
+                int reaching_dist = neighbour_dist+curr_dist;
+
+                if(reaching_dist<dist[neighbour_node]){
+                    q.push({-reaching_dist,neighbour_node});
+                    dist[neighbour_node] = reaching_dist;
+                }
+            }
+        }
+
+        int mx =0;
+        for(int i=1; i<=n; i++){
+            if(dist[i]==1e9) return -1;
+            mx = max(dist[i],mx);
+        }
+        return mx;
+    }
+};
 
 signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+    
 
     int tc;
     cin >> tc;

@@ -34,6 +34,20 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 void solve(){
+    pair<int,int> x,y;
+    cin >> x.F >> x.S >> y.F >> y.S;
+    if(x.F==y.F || x.S==y.S ){
+        int xx = abs(x.F-y.F);
+        int yy = abs(x.S-y.S);
+        cout   << x.F+yy << " " << x.S+xx << " " << y.F+yy << " " << y.S+xx;
+
+    }
+    else if((abs(x.F-y.F)==abs(x.S-y.S))){
+        cout << x.F << " " << y.S << " " << y.F << " " << x.S;
+    }
+    else{
+        cout << -1;
+    }
 }
 
 
@@ -42,11 +56,6 @@ signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
-    int tc;
-    cin >> tc;
-    while(tc--) 
-        solve();
-
+    solve();
     return 0;
 }

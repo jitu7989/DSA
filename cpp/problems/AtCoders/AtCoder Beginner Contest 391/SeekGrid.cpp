@@ -33,7 +33,43 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+int n,m; 
+vector<vector<char>> a,b;
+bool check(int x, int y ){
+
+    pr(x,y);
+    for (int i = x; i < x+m; ++i){
+        for (int j = y; j < y+m; ++j){
+            pr(i-x, j-y, i,j);
+            if(a[i][j]!=b[i-x][j-y]) return false;
+        }
+    }
+    if(DEBUG) cerr << "=============================\n";
+    return true;
+}
+
 void solve(){
+    cin >> n >> m;
+    a.assign(n, vector<char>(n));
+    b.assign(m, vector<char>(m));
+
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            cin >> a[i][j];
+    
+    for (int i = 0; i < m; ++i)
+        for (int j = 0; j < m; ++j)
+            cin >> b[i][j];
+    pr(a,b);
+    for (int i = 0; i <= (n-m); ++i){
+        for (int j = 0; j <= (n-m); ++j){
+            if(check(i,j)){
+                cout << i+1 << " " << j+1;
+                return;
+            }
+        }
+    }
+
 }
 
 
@@ -43,9 +79,6 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) 
         solve();
 
     return 0;

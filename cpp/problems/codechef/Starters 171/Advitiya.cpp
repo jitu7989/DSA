@@ -34,6 +34,23 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 void solve(){
+    string s; cin >> s;
+    string o = "ADVITIYA";
+    pr(s);
+    int x = 0;
+    for (int i = 0; i < 8; ++i){
+        if(s[i]!=o[i]){
+            if(s[i]<o[i]){
+                x+=(o[i]-s[i]);
+                pr(s[i]>o[i],x);
+            }
+            else{
+                pr(s[i]>o[i],x);
+                x+=((o[i]-'A')+1)+('Z'-s[i]);
+            }
+        }
+    }
+    cout << x << '\n';
 }
 
 

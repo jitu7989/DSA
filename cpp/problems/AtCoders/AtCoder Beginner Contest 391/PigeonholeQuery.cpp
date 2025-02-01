@@ -33,7 +33,36 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+int n,m,q,pth_piegon,hth_nest;
+vector<int> a;
+vector<int> piegon;
+
 void solve(){
+    cin >> n >> m; 
+    a.assign(n,1);
+    piegon.assign(n,0);
+    for (int i = 0; i < n; ++i) piegon[i] = i;
+
+    int ans = 0;
+    while(m--){
+        cin >> q;
+        if(q==1){
+            cin >> pth_piegon >> hth_nest; pth_piegon--;hth_nest--;
+            
+            int pth_piegon_nest = piegon[pth_piegon];
+            piegon[pth_piegon] = hth_nest;
+            a[pth_piegon_nest]--;
+            a[hth_nest]++;
+
+            if(a[hth_nest]==2) ans++;
+            if(a[pth_piegon_nest]==1) ans--;
+            pr(piegon,a);
+            
+        }
+        else{
+            cout << ans << '\n';
+        }
+    }
 }
 
 
@@ -43,9 +72,6 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) 
         solve();
 
     return 0;

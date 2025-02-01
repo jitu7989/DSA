@@ -18,10 +18,10 @@ typedef map<string, int> msi;
 #endif
 
 // Debugger macros that check DEBUG flag
-#define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a[i]<<" "; cerr<<endl;}
-#define debmat(mat,row,col) if(DEBUG){cerr<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat[i][j]<<" ";cerr<<endl;}}
+#define debarr(a,n) if(DEBUG){cerr<<#a<<" : ";for(int i=0;i<n;i++) cerr<<a{i]<<" "; cerr<<endl;}
+#define debmat(mat,row,col) if(DEBUG){cerr<<#mat<<" :\n";for(int i=0;i<row;i++) {for(int j=0;j<col;j++) cerr<<mat{i]{j]<<" ";cerr<<endl;}}
 #define pr(...) if(DEBUG){dbs(#__VA_ARGS__, __VA_ARGS__);}
-#define debset(set) if(DEBUG){cerr<<#set<<" : [ "; for(auto x:set){cerr<<x<<" ";} cerr<<"]\n";} 
+#define debset(set) if(DEBUG){cerr<<#set<<" : { "; for(auto x:set){cerr<<x<<" ";} cerr<<"]\n";} 
 #define debmap(map) if(DEBUG){cerr<<#map<<" : [ "; for(auto x:map){cerr<<"{"<<x.F<<":"<<x.S<<"} ";} cerr<<"]\n";}
 
 // Stream operators for debugging
@@ -33,20 +33,46 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
-void solve(){
-}
 
+int dx[]={ 0, 0, 1,-1};
+int dy[]={ 1,-1, 0, 0};
+vector<vector<int>> dist;
 
+class Solution {
+public:
+    int minCost(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        dist.assign(n,vector<int>(m,1e9));
 
-signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+        deque<ii> q; q.push_back(mp(0,0));
+        dist[0][0] = 0;
 
-    int tc;
-    cin >> tc;
-    while(tc--) 
-        solve();
-
-    return 0;
+        while(!q.empty()){
+            auto node = q.front(); q.pop_front();
+            for (int i = 0; i < 4; ++i){
+                int tx = node.F+dx[i];
+                int ty = node.S+dy[i];
+                
+                if(tx<0 || ty<0 || tx>=n || ty>=m) continue;
+                int cost = (i+1)!=grid[node.F][node.S];
+                
+                if(cost+dist[node.F][node.S]<dist[tx][ty]){
+                    dist[tx][ty]=cost+dist[node.F][node.S];
+                    if(cost) q.push_back({tx,ty});
+                    else q.push_front({tx,ty});
+                }
+            }
+        }
+        pr(dist);
+        return dist[n-1][m-1];
+    }
+};
+int main(){
+    Solution s;
+    vector<vector<int>> grid1 = {{1,1,1,1},{2,2,2,2},{1,1,1,1},{2,2,2,2}};
+    vector<vector<int>> grid2 = {{2,2,2},{2,2,2}};
+    cout<< s.minCost(grid1) << '\n';
+    cout<< s.minCost(grid2) << '\n';
 }

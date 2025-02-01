@@ -33,7 +33,23 @@ template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";
 // Utility function
 ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
+string arr[] = {"W", "NW", "N", "NE", "E" , "SE", "S", "SW"};
+map<string,int> pairs = {{"W", 0},
+    {"NW",1},
+    {"N", 2},
+    {"NE",3},
+    {"E",4},
+    {"SE",5}, 
+    {"S",6},
+    {"SW",7}
+};
+
 void solve(){
+    string s; cin >> s;
+    int x = pairs[s];
+    x+=4;
+    x=x%8;
+    cout << arr[x];
 }
 
 
@@ -43,9 +59,6 @@ signed main(){
     cin.tie(0);
     cout.tie(0);
 
-    int tc;
-    cin >> tc;
-    while(tc--) 
         solve();
 
     return 0;
