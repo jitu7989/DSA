@@ -31,8 +31,14 @@ template <class S, class T>ostream& operator <<(ostream& os, const pair<S, T>& p
 template <class T> void dbs(string str, T t) {cerr << str << " : " << t << "\n";}template <class T, class... S> void dbs(string str, T t, S... s) {int idx = str.find(','); cerr << str.substr(0, idx) << " : " << t << ","; dbs(str.substr(idx + 1), s...);}template <class T> void prc(T a, T b) {if(DEBUG){cerr << "["; for (T i = a; i != b; ++i) {if (i != a) cerr << ", "; cerr << *i;} cerr << "]\n";}}
 
 // Utility function
-ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+ll binpow(ll b,ll p,ll mod){ll ans=1;b%=mod;for(;p;p>>=1){if(p&1)ans=ans*b%mod;b=b*b%mod;}return ans;}
+ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+int range(int i, int n) {return 0<=i && i<=n;}
+/*
+====================================COMMENT FOR PROBLEM UNDERSTANDING====================================
 
+====================================xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx====================================
+*/
 void solve(){
 }
 
