@@ -1,12 +1,36 @@
 {
-    "cmd": ["g++", "-std=c++17", "$file", "-o", "${file_path}/${file_base_name}"],
+    // This command is executed when you press Ctrl+B.
+    // It compiles the C++ file and then runs the executable with a 2-second time limit.
+    // To change the time limit, modify the `2s` value in the `timeout` command below.
+    // It redirects standard input from "input.txt" and standard output to "output.txt".
+    // The `time` utility measures execution time and prints it to the build panel (stderr).
+    "cmd": [
+        "bash",
+        "-c",
+        "g++ -std=c++17 -Wall -Wextra -O2 '${file}' -o '${file_path}/${file_base_name}' && time timeout 5s '${file_path}/${file_base_name}' < input.txt > output.txt"
+    ],
+
+    // This regex helps Sublime Text parse compiler errors and allows you to jump to the error line.
     "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+
+    // Sets the working directory to the folder containing your C++ file.
     "working_dir": "${file_path}",
-    "selector": "source.cpp",
+
+    // This build system will only be active for C++ files.
+    "selector": "source.c++, source.cpp",
+
+    // Provides alternative build commands accessible via Ctrl+Shift+B.
     "variants": [
         {
-            "name": "Run",
-            "cmd": ["bash", "-c", "g++ -std=c++17 '${file}' -o '${file_path}/${file_base_name}' && '${file_path}/${file_base_name}'"]
+            // This variant is for running the code without file I/O.
+            // It's useful for simple problems or for debugging with print statements.
+            // The output will appear directly in the build panel.
+            "name": "Run in Panel (Interactive)",
+            "cmd": [
+                "bash",
+                "-c",
+                "g++ -std=c++17 -Wall -Wextra -O2 '${file}' -o '${file_path}/${file_base_name}' && '${file_path}/${file_base_name}'"
+            ]
         }
     ]
 }
